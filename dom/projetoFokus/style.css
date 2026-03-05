@@ -1,0 +1,723 @@
+﻿/* =========================================================
+   ALTERACAO 1: Design tokens (variaveis CSS) centralizadas.
+   Cada cor e efeito principal vira variavel para facilitar ajuste global.
+========================================================= */
+:root {
+    /* ALTERACAO 19: variaveis legadas adicionadas para suportar o CSS de tarefas/dropdown enviado */
+    --color-primary: #123456;
+    --color-secondary: #fff;
+    --azul-royal: #144480;
+    --fundo-card-timer: rgba(20, 68, 128, 0.3);
+    --lils: #b872ff;
+    --linear-botes: linear-gradient(180deg, #b872ff 0%, #144480 100%);
+    --azul-profundo: #01080e;
+    --fundo-card: rgba(255, 255, 255, 0.5);
+    --fundo-card-concludo: rgba(0, 244, 191, 0.4);
+    --fundo-modal-2: #1b293b;
+    --color-text-primary: #f5f8ff;
+    --color-text-muted: rgba(224, 234, 255, 0.76);
+    --color-surface: rgba(9, 19, 39, 0.58);
+    --color-surface-border: rgba(162, 196, 255, 0.28);
+    --color-surface-highlight: rgba(255, 255, 255, 0.08);
+    --color-accent: #7c5cff;
+    --color-accent-2: #2f9cf4;
+    --color-toggle-on: #7c5cff;
+    --color-toggle-off: #7a86a3;
+    --shadow-soft: 0 1.4rem 4.5rem rgba(2, 8, 20, 0.38);
+    --shadow-strong: 0 1.8rem 5.5rem rgba(2, 8, 20, 0.56);
+    --radius-card: 2.8rem;
+    --radius-pill: 999rem;
+    --radius-md: 1.2rem;
+    --transition-fast: 180ms ease;
+    --transition-base: 280ms ease;
+    --main-bg-color: linear-gradient(180deg, #4f2bb8 0%, #071734 52%, #05070f 100%);
+}
+
+/* =========================================================
+   ALTERACAO 2: Tema por contexto (foco / pausas) com gradientes mais ricos.
+   O JS so troca data-contexto no html; o CSS reage automaticamente.
+========================================================= */
+[data-contexto="foco"] {
+    --main-bg-color: radial-gradient(circle at 15% 20%, rgba(143, 85, 255, 0.42) 0%, transparent 36%),
+        linear-gradient(180deg, #2f145a 0%, #061734 52%, #05070f 100%);
+}
+
+[data-contexto="descanso-curto"] {
+    --main-bg-color: radial-gradient(circle at 18% 22%, rgba(36, 196, 152, 0.35) 0%, transparent 34%),
+        linear-gradient(180deg, #0d5c4b 0%, #0a203b 52%, #06090f 100%);
+}
+
+[data-contexto="descanso-longo"] {
+    --main-bg-color: radial-gradient(circle at 16% 18%, rgba(62, 143, 255, 0.38) 0%, transparent 35%),
+        linear-gradient(180deg, #124a96 0%, #0a1f3f 52%, #060a12 100%);
+}
+
+/* =========================================================
+   ALTERACAO 3: Reset util e previsibilidade de box-model.
+========================================================= */
+* {
+    box-sizing: border-box;
+}
+
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   ALTERACAO 4: Base tipografica e fundo responsivo global.
+========================================================= */
+html {
+    font-size: 10px;
+    min-height: 100%;
+    background: var(--main-bg-color);
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family: "Montserrat", sans-serif;
+    background:
+        radial-gradient(circle at 82% 10%, rgba(126, 168, 255, 0.16) 0%, transparent 36%),
+        radial-gradient(circle at 8% 90%, rgba(167, 124, 255, 0.12) 0%, transparent 40%),
+        url("./imagens/pattern.png");
+    background-repeat: no-repeat, no-repeat, repeat;
+    background-size: auto, auto, 55rem;
+}
+
+/* =========================================================
+   ALTERACAO 5: Titulos com familia existente e suavizacao visual.
+========================================================= */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-family: "Unbounded", cursive;
+    letter-spacing: 0.03em;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* =========================================================
+   ALTERACAO 6: Container principal centralizado e com espacamento.
+========================================================= */
+.app {
+    width: min(112rem, 92vw);
+    margin: 0 auto;
+    padding-bottom: 3.2rem;
+}
+
+.app__logo-figure {
+    display: flex;
+    justify-content: center;
+    padding: 3.2rem 0 1.6rem;
+}
+
+.app__logo-image {
+    width: clamp(11rem, 16vw, 17.5rem);
+    filter: drop-shadow(0 1.2rem 2.2rem rgba(0, 0, 0, 0.32));
+}
+
+/* =========================================================
+   ALTERACAO 7: Banner em grid para melhor distribuicao desktop/mobile.
+========================================================= */
+.app__section-banner-container {
+    display: grid;
+    grid-template-columns: minmax(28rem, 1fr) minmax(24rem, 42rem);
+    align-items: center;
+    gap: clamp(2.4rem, 3vw, 4.4rem);
+}
+
+.app__title {
+    max-width: 58rem;
+    font-size: clamp(3.2rem, 5.2vw, 5.6rem);
+    line-height: 1.2;
+    font-weight: 300;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+    text-shadow: 0 0.6rem 2.4rem rgba(0, 0, 0, 0.38);
+}
+
+.app__title-strong {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.app__image-figure {
+    justify-self: end;
+}
+
+.app__image {
+    width: min(100%, 37rem);
+    filter: drop-shadow(0 2rem 4.2rem rgba(6, 11, 30, 0.55));
+    animation: floatIn 700ms var(--transition-base) both;
+}
+
+/* =========================================================
+   ALTERACAO 8: Card principal em estilo glassmorphism.
+========================================================= */
+.app__section-card-container {
+    margin-top: clamp(2rem, 5vw, 5.2rem);
+    display: flex;
+    justify-content: center;
+}
+
+.app__card {
+    width: min(64rem, 100%);
+    padding: clamp(2rem, 3vw, 3rem);
+    border-radius: var(--radius-card);
+    border: 0.1rem solid var(--color-surface-border);
+    background:
+        linear-gradient(160deg, var(--color-surface-highlight), transparent 35%),
+        var(--color-surface);
+    backdrop-filter: blur(1.4rem);
+    box-shadow: var(--shadow-soft);
+    animation: riseIn 600ms var(--transition-base) both;
+}
+
+/* =========================================================
+   ALTERACAO 9: Lista de modos com estilo de chips interativos.
+========================================================= */
+.app__card-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.app__card-button {
+    border: 0.1rem solid transparent;
+    border-radius: var(--radius-pill);
+    padding: 0.9rem 1.8rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    background: rgba(173, 196, 255, 0.1);
+    cursor: pointer;
+    transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.app__card-button:hover {
+    transform: translateY(-0.2rem);
+    border-color: rgba(204, 220, 255, 0.42);
+    background: rgba(177, 202, 255, 0.18);
+}
+
+.app__card-button:focus-visible {
+    outline: 0.2rem solid rgba(255, 255, 255, 0.65);
+    outline-offset: 0.2rem;
+}
+
+.app__card-button.active {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+    box-shadow: 0 0.8rem 2rem rgba(47, 156, 244, 0.42);
+    font-weight: 700;
+}
+
+/* =========================================================
+   ALTERACAO 10: Timer com escala responsiva e espacamento consistente.
+========================================================= */
+.app__card-timer {
+    margin: clamp(2.4rem, 3.2vw, 3.4rem) 0;
+    text-align: center;
+    font-family: "Unbounded", cursive;
+    font-size: clamp(5.2rem, 10vw, 11.8rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    text-shadow: 0 1rem 3.2rem rgba(0, 0, 0, 0.45);
+}
+
+/* =========================================================
+   ALTERACAO 11: Linha da musica (toggle + label) com alinhamento mais limpo.
+========================================================= */
+.app__card-list-label {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.app__card-list:has(.toggle) {
+    margin-top: 0.4rem;
+}
+
+/* =========================================================
+   ALTERACAO 12: Botao principal maior, com microinteracao e foco acessivel.
+========================================================= */
+.app__card-primary-button-wrapper {
+    margin-top: 2.6rem;
+    display: flex;
+    justify-content: center;
+}
+
+.app__card-primary-button {
+    min-width: 18rem;
+    padding: 1.1rem 1.8rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 1rem 2.4rem rgba(15, 69, 140, 0.46);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+}
+
+.app__card-primary-button:hover {
+    transform: translateY(-0.2rem) scale(1.01);
+    box-shadow: 0 1.4rem 3.2rem rgba(15, 69, 140, 0.58);
+    filter: saturate(1.08);
+}
+
+.app__card-primary-button:active {
+    transform: translateY(0);
+}
+
+.app__card-primary-button:focus-visible {
+    outline: 0.2rem solid rgba(255, 255, 255, 0.72);
+    outline-offset: 0.2rem;
+}
+
+/* =========================================================
+   ALTERACAO 13: Footer com contraste melhor e largura limitada de texto.
+========================================================= */
+.app__footer {
+    margin-top: 4.6rem;
+    padding: 2.4rem 1.8rem;
+    display: flex;
+    justify-content: center;
+    border-top: 0.1rem solid rgba(255, 255, 255, 0.08);
+    background: rgba(2, 8, 20, 0.52);
+    backdrop-filter: blur(0.8rem);
+}
+
+.app__footer-text {
+    max-width: 74rem;
+    margin: 0;
+    color: var(--color-text-muted);
+    text-align: center;
+    font-size: 1.4rem;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   ALTERACAO 14: Toggle modernizado com animacao suave.
+========================================================= */
+.toggle {
+    cursor: pointer;
+    display: inline-flex;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 5.8rem;
+    height: 3.2rem;
+    display: inline-block;
+    border-radius: var(--radius-pill);
+    background: var(--color-toggle-off);
+    box-shadow: inset 0 0 0 0.1rem rgba(255, 255, 255, 0.18);
+    transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.toggle-switch::before {
+    content: "";
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ffffff 0%, #e8ecff 100%);
+    transition: left var(--transition-base), transform var(--transition-base);
+}
+
+.toggle-checkbox:checked + .toggle-switch {
+    background: var(--color-toggle-on);
+    box-shadow: inset 0 0 0 0.1rem rgba(255, 255, 255, 0.26), 0 0.8rem 1.8rem rgba(124, 92, 255, 0.35);
+}
+
+.toggle-checkbox:checked + .toggle-switch::before {
+    left: 3rem;
+}
+
+.toggle-checkbox:focus-visible + .toggle-switch {
+    outline: 0.2rem solid rgba(255, 255, 255, 0.72);
+    outline-offset: 0.2rem;
+}
+
+.toggle-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =========================================================
+   ALTERACAO 20: bloco de dropdown incorporado do CSS enviado.
+========================================================= */
+.dropdown-container {
+    position: relative;
+}
+
+.app__section-task-header__ul {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    right: 0;
+    min-width: 24rem;
+    padding: 1.6rem;
+}
+
+.app__section-task-header__ul:hover,
+.app_button-more:hover ~ .app__section-task-header__ul {
+    display: block;
+    text-align: right;
+    border-radius: 0.8rem;
+    border: 0.2rem solid var(--azul-royal, #144480);
+    background: var(--fundo-modal-2, #1b293b);
+}
+
+.app__section-task-header__li {
+    margin: 1.6rem 0;
+}
+
+.app__section-task-header__li__button {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    outline: inherit;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #fff;
+    gap: 0.8rem;
+}
+
+/* =========================================================
+   ALTERACAO 21: bloco de tarefas/formulario incorporado do CSS enviado.
+========================================================= */
+.hidden {
+    display: none;
+}
+
+.app__section-task-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.app__section-task-content {
+    width: 59rem;
+    max-width: 90%;
+    color: #fff;
+}
+
+.app__section-active-task {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6rem;
+    padding: 4rem 0;
+    border-bottom: 1px solid #144480;
+    margin-bottom: 4rem;
+}
+
+.app__form-textarea,
+.app__form-textarea::placeholder {
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    white-space: nowrap;
+    font-family: "Montserrat", sans-serif;
+}
+
+.app__section-active-task-description {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+}
+
+.app__section-tasks-heading {
+    font-size: 2.6rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+}
+
+.app__section-task-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.app_button-edit,
+.app_button-more {
+    border: none;
+    cursor: pointer;
+    outline: inherit;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+}
+
+.app__section-active-task-label {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+
+.app__section-task-list {
+    margin-top: 2.4rem;
+    margin-bottom: 4rem;
+}
+
+.app__section-task-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    border-radius: 0.8rem;
+    background: var(--fundo-card);
+    margin-bottom: 0.8rem;
+    padding: 1.6rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.app__section-task-list-item-description {
+    flex-grow: 1;
+    margin: 0;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    color: var(--azul-profundo);
+    font-family: "Montserrat", sans-serif;
+}
+
+.app__section-task-list-item-complete.app__section-task-list-item {
+    background: var(--fundo-card-concludo);
+    cursor: inherit;
+}
+
+.app__section-task-list-item-active.app__section-task-list-item {
+    border: 2px solid #fff;
+}
+
+.app__section-task-list-item-complete .app__section-task-icon-status circle {
+    fill: #00f4bf;
+}
+
+.app__form-add-task {
+    padding: 1.6rem;
+    border-radius: 0.8rem;
+    background: var(--fundo-card);
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    font-family: "Montserrat", sans-serif;
+}
+
+.app__form-label {
+    color: var(--azul-profundo);
+    font-family: "Unbounded", cursive;
+    font-size: 2.6rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+    display: block;
+    margin-bottom: 3.2rem;
+}
+
+.app__form-textarea {
+    width: 100%;
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+    background: #98a0a8;
+}
+
+.app__form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.6rem;
+    margin-top: 3.2rem;
+}
+
+.app__form-footer .splitter {
+    flex-grow: 1;
+}
+
+.app__form-footer__button {
+    border: none;
+    cursor: pointer;
+    outline: inherit;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    color: var(--azul-profundo);
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    gap: 0.8rem;
+}
+
+.app__form-footer__button--confirm {
+    border-radius: 3.2rem;
+    padding: 0.8rem 2.4rem;
+    color: #fff;
+    background: var(--azul-profundo);
+}
+
+.app__button--add-task {
+    border: none;
+    cursor: pointer;
+    outline: inherit;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--lils);
+    border-radius: 3.2rem;
+    border: 0.2rem solid var(--lils);
+    width: 100%;
+    margin-top: 4rem;
+    padding: 1.8rem;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+}
+
+.app_button-edit:disabled {
+    color: #e6e6e6;
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   ALTERACAO 15: Animacoes de entrada simples e funcionais.
+========================================================= */
+@keyframes riseIn {
+    from {
+        opacity: 0;
+        transform: translateY(1.8rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(1.2rem) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   ALTERACAO 16: Responsividade tablet.
+========================================================= */
+@media (max-width: 1024px) {
+    .app__section-banner-container {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+    }
+
+    .app__image-figure {
+        justify-self: center;
+    }
+
+    .app__title {
+        max-width: 64rem;
+    }
+}
+
+/* =========================================================
+   ALTERACAO 17: Responsividade celular com espacamentos menores.
+========================================================= */
+@media (max-width: 767px) {
+    .app {
+        width: min(96vw, 56rem);
+    }
+
+    .app__logo-figure {
+        padding-top: 2.4rem;
+    }
+
+    .app__card {
+        border-radius: 2.2rem;
+        padding: 1.8rem 1.4rem;
+    }
+
+    .app__card-list {
+        gap: 0.8rem;
+    }
+
+    .app__card-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .app__card-primary-button {
+        width: 100%;
+    }
+
+    .app__footer {
+        margin-top: 3.2rem;
+    }
+
+    /* ALTERACAO 22: regra mobile adicional trazida do CSS enviado */
+    .app__section-active-task {
+        gap: 2rem;
+    }
+}
+
+/* =========================================================
+   ALTERACAO 18: Respeita usuarios com reducao de movimento.
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
