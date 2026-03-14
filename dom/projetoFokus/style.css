@@ -370,9 +370,6 @@ img {
     pointer-events: none;
 }
 
-/* =========================================================
-   ALTERACAO 20: bloco de dropdown incorporado do CSS enviado.
-========================================================= */
 .dropdown-container {
     position: relative;
 }
