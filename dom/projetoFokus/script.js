@@ -12,9 +12,13 @@ const musicaFocoInput = document.querySelector('#alternar-musica');
 const iniciarOuPausarBt = document.querySelector('#start-pause span');
 const tempoNaTela = document.querySelector('#timer');
 
-// caminho relativo para evitar 404 fora da raiz do servidor.
+const TEMPO_FOCO_EM_SEGUNDOS = 30;
+const TEMPO_DESCANSO_CURTO_EM_SEGUNDOS = 300;
+const TEMPO_DESCANSO_LONGO_EM_SEGUNDOS = 900;
+
+// caminho relativo para evitar 404 fora da raiz do servidor
 const musica = new Audio('./sons/luna-rise-part-one.mp3');
-let tempoDecorridoEmSegundos = 3600;
+let tempoDecorridoEmSegundos = TEMPO_FOCO_EM_SEGUNDOS;
 let intervaloId = null;
 const audioPlay = new Audio('./sons/play.wav');
 const audioPausa = new Audio('./sons/pause.mp3');
@@ -32,19 +36,19 @@ musicaFocoInput.addEventListener('change', () => {
 });
 
 focoBt.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 3600;
+    tempoDecorridoEmSegundos = TEMPO_FOCO_EM_SEGUNDOS;
     alterarContexto('foco');
     focoBt.classList.add('active');
 });
 
 curtoBt.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 300;
+    tempoDecorridoEmSegundos = TEMPO_DESCANSO_CURTO_EM_SEGUNDOS;
     alterarContexto('descanso-curto');
     curtoBt.classList.add('active');
 });
 
 longoBt.addEventListener('click', () => {
-     tempoDecorridoEmSegundos = 900;
+     tempoDecorridoEmSegundos = TEMPO_DESCANSO_LONGO_EM_SEGUNDOS;
     alterarContexto('descanso-longo');
     longoBt.classList.add('active');
 });
@@ -63,11 +67,9 @@ function alterarContexto(contexto) {
             titulo.innerHTML = `Otimize sua produtividade,<br> <strong class="app__title-strong">mergulhe no que importa.</strong>`;
             break;
         case 'descanso-curto':
-            // ALTERACAO 2: escape Unicode evita texto corrompido por diferenca de encoding.
             titulo.innerHTML = `Que tal dar uma respirada?  <strong class="app__title-strong">Fa\u00e7a uma pausa curta!!.</strong>`;
             break;
         case 'descanso-longo':
-            // ALTERACAO 2.1: escape Unicode evita texto corrompido por diferenca de encoding.
             titulo.innerHTML = `Hora de voltar a superficie.  <strong class="app__title-strong">Fa\u00e7a uma pausa longa.</strong>`;
             break;
         default:
@@ -79,6 +81,11 @@ const contagemRegressiva = () => {
     if (tempoDecorridoEmSegundos <= 0) {
         audioTempoFinalizado.play();
         alert('tempo finalizado!');
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if(focoAtivo){
+            const event = new CustomEvent('focoFinalizado');  //instancia de uma classe
+            document.dispatchEvent(event); //disparar o evento, broadcast
+        }
         zerar();
         return;
     }
@@ -105,7 +112,6 @@ function iniciarOuPausar() {
 
 function zerar() {
     clearInterval(intervaloId);
-    // ALTERACAO 2: escape Unicode evita texto corrompido por diferenca de encoding.
     iniciarOuPausarBt.innerHTML = '<strong>Come\u00e7ar</strong>';
     intervaloId = null;
 }
@@ -116,5 +122,4 @@ function mostrarTempo() {
     tempoNaTela.innerHTML = `${String(minutos).padStart(2,0)}:${String(segundos).padStart(2,0)}`;
 }
 
-// ALTERACAO 4: mostra o tempo inicial ao carregar a pagina.
 mostrarTempo();
