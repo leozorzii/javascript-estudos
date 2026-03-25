@@ -1,4 +1,3 @@
-![Imagem de capa do curso. O título é "3519 - Node.js e terminal" e o subtítulo é "Dominando o ambiente de desenvolvimento front-end".](./thumb.png)
 
 # VidFlow
 
