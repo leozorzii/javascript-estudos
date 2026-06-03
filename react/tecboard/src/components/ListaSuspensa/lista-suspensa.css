@@ -1,0 +1,22 @@
+.lista-suspensa-form {
+  box-sizing: border-box;
+  /* Layout automático */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 10px;
+  width: 328px;
+  height: 35px;
+  color: #ffffff;
+  background-color: #212121;
+  /* Cinza médio */
+  border: 1px solid #4a4949;
+  border-radius: 8px;
+  /* Auto layout por dentro */
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
